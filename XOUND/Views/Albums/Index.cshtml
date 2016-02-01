@@ -1,0 +1,54 @@
+﻿@model XOUND.Models.AlbumViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Albums</h2>
+
+<div class="col-sm-12">
+    @foreach (XOUND.Models.Album album in Model.Albums)
+    {
+        
+        <div class="album-row col-sm-12" data-dominantcolor=@(album.ArtworkDominantColor) data-contrastcolor=@(album.ArtworkContrastColor)>
+            <div class="album-artwork-background" style=@("background-image:url(\"" + album.ArtworkImageURL + "\")")></div>
+            <div class="album-artwork">
+                <img src="@album.ArtworkImageURL" />
+            </div>
+            <div class="album-info">
+                <label class="album-title" style=@("color:" + album.ArtworkContrastColor)>@album.Title</label>
+                <label class="album-year" style=@("color:" + album.ArtworkContrastColor)>@album.Year</label>
+            </div>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.album-row').on('click', function () {
+            if ($(this).attr('data-open') == '1') {
+                $(this).animate({
+                    height: "-=200"
+                }, 500, function () { }).removeAttr('data-open');
+            }
+            else {
+                $('.album-row[data-open="1"]').animate({
+                    height: "-=200"
+                }, 500, function () { }).removeAttr('data-open');
+
+                $(this).animate({
+                    height: "+=200"
+                }, 500, function () { }).attr('data-open', '1');
+
+                //$('body').animate({
+                //    backgroundColor: $(this).attr('data-dominantcolor')
+                //}, 500);
+
+                $('body').css('background-color', $(this).attr('data-dominantcolor'));
+
+                //var artworkUrl = $(this).find('.album-artwork-background').css('background-image');
+                //$('body').css('background-image', artworkUrl);
+            }
+        });
+    });
+</script>

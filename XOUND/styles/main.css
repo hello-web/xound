@@ -1,0 +1,70 @@
+﻿body {
+    /*background: red;
+    background: -webkit-linear-gradient(-90deg, #fffa99, #bf6606); 
+    background: -o-linear-gradient(-90deg, #fffa99, #bf6606); 
+    background: -moz-linear-gradient(-90deg, #fffa99, #bf6606); 
+    background: linear-gradient(-90deg, #fffa99, #bf6606);*/ 
+    -webkit-transition: background 1s;
+    -moz-transition: background 1s;
+    -o-transition: background 1s;
+    transition: background 1s;
+}
+
+.album-artwork {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+}
+
+    .album-artwork img {
+        width: 100px;
+        height: 100px;
+    }
+
+.album-info {
+    padding-left: 20px;
+    display: inline-block;
+}
+
+.album-row {
+    margin-top: 5px;
+    padding: 10px;
+    transition: box-shadow linear .1s;
+    box-shadow: .2px .2px .2px black;
+}
+
+.album-row:hover {
+    box-shadow: 7px 7px 17px black;
+}
+
+.album-artwork-background {
+    top:0;
+    left:0;
+    z-index:-100;
+    position:absolute;
+    background-position: center;
+    background-color: #808080;
+    -webkit-filter: blur(15px);
+    -moz-filter: blur(15px);
+    -o-filter: blur(15px);
+    -ms-filter: blur(15px);
+    filter: blur(15px);
+    height: 100%;
+    width: inherit;
+    overflow:hidden;
+}
+
+.album-title {
+    font-weight: bold;
+    color: #121212;
+    font-size:x-large;
+    display:block;
+}
+
+.album-year {
+    display: block;
+}
+
+footer {
+    display: block;
+}
