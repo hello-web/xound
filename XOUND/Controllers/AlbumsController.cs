@@ -11,13 +11,17 @@ namespace XOUND.Controllers
 {
     public class AlbumsController : Controller
     {
-        //
-        // GET: /Albums/
         public ActionResult Index()
         {
             XOUNDContext ctx = new XOUNDContext();
             AlbumViewModel avm = new AlbumViewModel();
             avm.Albums = ctx.Albums.ToList();
+
+            foreach(Album album in avm.Albums)
+            {
+                album.Tracks = ctx.Tracks.Where(x => x.AlbumID == album.ID).ToList();
+            }
+
             return View(avm);
         }
 

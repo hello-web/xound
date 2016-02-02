@@ -1,0 +1,46 @@
+﻿@model XOUND.Models.MultiTrackViewModel
+
+@{
+    ViewBag.Title = "CreateMulti";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>CreateMulti</h2>
+
+
+@using (Html.BeginForm("CreateMulti", "Tracks", FormMethod.Post, new { enctype = "multipart/form-data" })) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>MultiTrackViewModel</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        @for (int i = 0; i < 30; i++)
+        {
+            <div>
+                <label>Track @(i + 1).ToString()</label>
+                Title: @Html.TextBoxFor(x => x.Tracks[i].Title)
+                Track No.: @Html.TextBoxFor(x => x.Tracks[i].TrackNo, new { @Value = (i + 1).ToString() });
+                Album: @Html.DropDownListFor(x => x.Tracks[i].AlbumID, (ViewBag.Albums as IEnumerable<SelectListItem>))
+                File: @Html.TextBoxFor(x => x.Tracks[i].AudioFile, new { type = "file" })
+            </div>
+            <hr />
+        }
+    </div>
+    
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="CreateMulti" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

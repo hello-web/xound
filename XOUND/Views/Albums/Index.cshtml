@@ -3,14 +3,19 @@
 @{
     ViewBag.Title = "Index";
 }
+<script src="~/Scripts/soundmanager2.js"></script>
 
 <h2>Albums</h2>
+
+<div class="navbar">
+
+</div>
 
 <div class="col-sm-12">
     @foreach (XOUND.Models.Album album in Model.Albums)
     {
-        
-        <div class="album-row col-sm-12" data-dominantcolor=@(album.ArtworkDominantColor) data-contrastcolor=@(album.ArtworkContrastColor)>
+        <div class="album-row col-sm-12" data-dominantcolor=@(album.ArtworkDominantColor) data-contrastcolor=@(album.ArtworkContrastColor)
+             data-trackrows=@((album.Tracks.Count / 4) + 1)>
             <div class="album-artwork-background" style=@("background-image:url(\"" + album.ArtworkImageURL + "\")")></div>
             <div class="album-artwork">
                 <img src="@album.ArtworkImageURL" />
@@ -19,36 +24,101 @@
                 <label class="album-title" style=@("color:" + album.ArtworkContrastColor)>@album.Title</label>
                 <label class="album-year" style=@("color:" + album.ArtworkContrastColor)>@album.Year</label>
             </div>
+            <div class="album-tracks" style="display: none">
+                @foreach (XOUND.Models.Track track in album.Tracks)
+                {
+                    <div data-trackid=@(track.ID) class="track col-sm-3" style=@("border-color:" + album.ArtworkContrastColor)>
+                        <div class="track-background" style=@("background-color:" + album.ArtworkContrastColor)></div>
+                        <img src="https://cdn4.iconfinder.com/data/icons/social-messaging-productivity-1/128/play-icon-2-128.png" class="play-pause-icon" />
+                        <label class="track-no" style=@("color:" + album.ArtworkDominantColor)>@track.TrackNo.</label>
+                        <label title="@track.Title" class="track-title" style=@("color:" + album.ArtworkDominantColor)>@track.Title</label>
+                        <label class="track-duration pull-right" style=@("color:" + album.ArtworkDominantColor)>@track.DurationMinutes:@(track.DurationSeconds < 10 ? "0" + track.DurationSeconds.ToString() : track.DurationSeconds.ToString())</label>
+                    </div>
+                }
+            </div>
         </div>
     }
 </div>
 
 <script type="text/javascript">
+    var effect_time = 500;
+    var row_height = 40;
+    var row_addition = 50;
+    var current_sound;
     $(document).ready(function () {
-        $('.album-row').on('click', function () {
+
+        $('.album-row').on('click', function (e) {
+            
             if ($(this).attr('data-open') == '1') {
+                var sectionHeight = row_addition + parseInt($(this).attr('data-trackrows')) * row_height;
                 $(this).animate({
-                    height: "-=200"
-                }, 500, function () { }).removeAttr('data-open');
+                    height: "-=" + sectionHeight
+                }, effect_time, function () { })
+                    .removeAttr('data-open');
+
+                $(this).find('.album-tracks')
+                    .fadeOut(effect_time);
             }
             else {
+                var sectionHeight = row_addition + parseInt($('.album-row[data-open="1"]').attr('data-trackrows')) * row_height;
                 $('.album-row[data-open="1"]').animate({
-                    height: "-=200"
-                }, 500, function () { }).removeAttr('data-open');
+                    height: "-=" + sectionHeight
+                }, effect_time, function () { })
+                    .removeAttr('data-open')
+                    .find('.album-tracks')
+                    .fadeOut(effect_time);
+
+                sectionHeight = row_addition + parseInt($(this).attr('data-trackrows')) * row_height;
 
                 $(this).animate({
-                    height: "+=200"
-                }, 500, function () { }).attr('data-open', '1');
+                    height: "+=" + sectionHeight
+                }, effect_time, function () { })
+                    .attr('data-open', '1');
 
-                //$('body').animate({
-                //    backgroundColor: $(this).attr('data-dominantcolor')
-                //}, 500);
+                $(this).find('.album-tracks')
+                    .fadeIn(effect_time);
 
                 $('body').css('background-color', $(this).attr('data-dominantcolor'));
-
-                //var artworkUrl = $(this).find('.album-artwork-background').css('background-image');
-                //$('body').css('background-image', artworkUrl);
             }
         });
+
+        $('.track').on('click', function (e) {
+            
+            return false;
+        });
+
+        $('.play-pause-icon').on('click', function (e) {
+            var contrastColor = $(this).closest('.album-row').attr('data-contrastcolor');
+            var dominantColor = $(this).closest('.album-row').attr('data-dominantcolor');
+
+            var isPlaying = $(this).attr('data-playing') == "1";
+
+            $('.play-pause-icon[data-playing="1"]').removeAttr('data-playing')
+                .attr('src', 'https://cdn4.iconfinder.com/data/icons/social-messaging-productivity-1/128/play-icon-2-128.png')
+                .parent().css('border-color', contrastColor);
+
+            soundManager.stopAll();
+
+            if (isPlaying) {
+                return false;
+            }
+
+            if($(this).attr('data-playing') != '1') {
+                $(this).attr('data-playing', '1')
+                    .attr('src', 'https://cdn3.iconfinder.com/data/icons/stroke/53/Button-Pause-128.png')
+                    .closest('.track')
+                    .css('border-color', dominantColor);
+                playSong($(this).closest('.track').attr('data-trackid'));
+            }
+            
+            return false;
+        })
     });
+
+    function playSong(id) {
+        var current_sound = soundManager.createSound({
+            url: "/api/SoundAPI/GetAudioFile?trackID=" + id
+        });
+        current_sound.play();
+    }
 </script>

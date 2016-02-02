@@ -5,7 +5,7 @@ using System.Web;
 
 namespace XOUND.Models
 {
-    public class Album
+    public class Album : ModelBase
     {
         public int ID { get; set; }
         public string Title { get; set; }
@@ -14,8 +14,8 @@ namespace XOUND.Models
         public string ArtworkDominantColor { get; set; }
         public string ArtworkContrastColor { get; set; }
         public int TrackCount { get; set; }
-        public bool Active { get; set; }
-        public DateTime InsertDate { get; set; }
         public string Genre { get; set; }
+
+        public List<Track> Tracks { get; set; }
     }
 }
