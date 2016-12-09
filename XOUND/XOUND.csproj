@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -191,9 +192,9 @@
     <Compile Include="Models\ModelBase.cs" />
     <Compile Include="Models\MultiTrackViewModel.cs" />
     <Compile Include="Models\Track.cs" />
-    <Compile Include="Models\TrackFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Models\TrackFile.cs" />
     <Compile Include="XOUNDContext.cs" />
   </ItemGroup>
   <ItemGroup>
