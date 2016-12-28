@@ -1,14 +1,24 @@
 ﻿@model XOUND.Models.AlbumViewModel
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Albums";
 }
-<script src="~/Scripts/soundmanager2.js"></script>
+<script src="~/Scripts/soundmanager2-jsmin.js"></script>
 
-<h2>Albums</h2>
+<div class="navbar navbar-fixed-bottom player-container">
+    <div class="player-controls col-md-2 col-sm-2">
+        <img class="player-play-pause-icon" src="https://cdn4.iconfinder.com/data/icons/social-messaging-productivity-1/128/play-icon-2-128.png"/>
+    </div>
+    
+    <div class="player-title col-md-10">
+        <label class="player-title-text">TITLE TEXT HERE</label>
+    </div>
 
-<div class="navbar">
-
+    <div class="player-seekbar col-md-10">
+        <label class="player-time pull-left">00:00</label>
+        <input type="range" step="5" min="0" max="1000"  size="1000" class="player-seekbar-slider col-sm-12 col-xs-12 col-md-12" />
+        <label class="player-total-time pull-right">00:00</label>
+    </div>
 </div>
 
 <div class="col-sm-12">
@@ -16,7 +26,7 @@
     {
         <div class="album-row col-sm-12" data-dominantcolor=@(album.ArtworkDominantColor) data-contrastcolor=@(album.ArtworkContrastColor)
              data-trackrows=@((album.Tracks.Count / 4) + 1)>
-            <div class="album-artwork-background" style=@("background-image:url(\"" + album.ArtworkImageURL + "\")")></div>
+            <div class="album-artwork-background" style=@("background-color:" + album.ArtworkDominantColor + ";background-image:url(\"" + album.ArtworkImageURL + "\")")></div>
             <div class="album-artwork">
                 <img src="@album.ArtworkImageURL" />
             </div>
@@ -27,11 +37,10 @@
             <div class="album-tracks" style="display: none">
                 @foreach (XOUND.Models.Track track in album.Tracks)
                 {
-                    <div data-trackid=@(track.ID) class="track col-sm-3" style=@("border-color:" + album.ArtworkContrastColor)>
+                    <div data-trackid=@(track.ID) class="track col-xs-3 col-sm-3 col-md-3 col-lg-3" style=@("border-color:" + album.ArtworkContrastColor)>
                         <div class="track-background" style=@("background-color:" + album.ArtworkContrastColor)></div>
                         <img src="https://cdn4.iconfinder.com/data/icons/social-messaging-productivity-1/128/play-icon-2-128.png" class="play-pause-icon" />
-                        <label class="track-no" style=@("color:" + album.ArtworkDominantColor)>@track.TrackNo.</label>
-                        <label title="@track.Title" class="track-title" style=@("color:" + album.ArtworkDominantColor)>@track.Title</label>
+                        <label title="@track.Title" class="track-title" style=@("color:" + album.ArtworkDominantColor)>@track.TrackNo. @track.Title</label>
                         <label class="track-duration pull-right" style=@("color:" + album.ArtworkDominantColor)>@track.DurationMinutes:@(track.DurationSeconds < 10 ? "0" + track.DurationSeconds.ToString() : track.DurationSeconds.ToString())</label>
                     </div>
                 }
@@ -56,7 +65,7 @@
                 }, effect_time, function () { })
                     .removeAttr('data-open');
 
-                $(this).find('.album-tracks')
+                $(this).find('.album-tracks')//.hide();
                     .fadeOut(effect_time);
             }
             else {
@@ -65,7 +74,7 @@
                     height: "-=" + sectionHeight
                 }, effect_time, function () { })
                     .removeAttr('data-open')
-                    .find('.album-tracks')
+                    .find('.album-tracks')//.hide();
                     .fadeOut(effect_time);
 
                 sectionHeight = row_addition + parseInt($(this).attr('data-trackrows')) * row_height;
@@ -75,7 +84,7 @@
                 }, effect_time, function () { })
                     .attr('data-open', '1');
 
-                $(this).find('.album-tracks')
+                $(this).find('.album-tracks')//.show();
                     .fadeIn(effect_time);
 
                 $('body').css('background-color', $(this).attr('data-dominantcolor'));

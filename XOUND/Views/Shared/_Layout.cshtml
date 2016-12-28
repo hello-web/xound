@@ -18,13 +18,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("X", "Index", "Home", null, new { @class = "navbar-brand" })
+                @*@Html.ActionLink("X", "Index", "Home", null, new { @class = "navbar-brand" })*@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Albums", "Index", "Albums")</li>
                 </ul>
-                @Html.Partial("_LoginPartial")
+                @*@Html.Partial("_LoginPartial")*@
             </div>
         </div>
     </div>
@@ -35,6 +35,10 @@
     <hr />
     <footer class="col-sm-12">
         <p>&copy; @DateTime.Now.Year</p>
+        <p>
+            This website has been implemented for study purposes only. 
+            Every piece of material contained in this website belongs to their respective owners and will be taken down if requested.
+        </p>
     </footer>
 
     @Scripts.Render("~/bundles/jquery")
